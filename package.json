@@ -1,0 +1,48 @@
+{
+  "name": "digital-republic-challenge",
+  "version": "1.0.0",
+  "description": "API REST com algumas funções essenciais relacionadas ao gerenciamento de contas bancárias em Node.js",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "mocha ./src/tests/**.test.js --exit",
+    "test:coverage": "nyc --all --reporter=html npm run test",
+    "dev": "nodemon src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ViniciusCarvalho94/Digital-Republic-Challenge.git"
+  },
+  "keywords": [
+    "Node.js",
+    "API",
+    "Digital",
+    "Republic",
+    "Challenge"
+  ],
+  "author": "Vinicius Carvalho",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ViniciusCarvalho94/Digital-Republic-Challenge/issues"
+  },
+  "homepage": "https://github.com/ViniciusCarvalho94/Digital-Republic-Challenge#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "express": "^4.17.2",
+    "joi": "^17.5.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.5.9"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
+    "eslint": "^8.7.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
+    "mocha": "^9.2.0",
+    "mongodb-memory-server": "^6.9.6",
+    "nodemon": "^2.0.15",
+    "nyc": "^15.1.0",
+    "sinon": "^12.0.1"
+  }
+}
