@@ -1,22 +1,26 @@
 const objError = require('../functions/objError');
 const findUserModel = require('../models/findUserModel');
-const depositTransferModel = require('../models/depositTransferModel');
+const updateBalanceModel = require('../models/updateBalanceModel');
 const depositSchema = require('../schemas/depositSchema');
+const { STATUS_400, DEPOSIT_DESCRIPTION } = require('../lib/constants');
 
-const STATUS_400 = 400;
-const DESCRIPTION = 'CPF ou valor inválidos, cpf no formato (xxx.xxx.xxx-xx) e valor inteiro entre 1 e 2000';
+function validateSchema(cpf, value) {
+  const { error } = depositSchema.validate({ cpf, value });
+  if (error) throw objError(STATUS_400, DEPOSIT_DESCRIPTION);
+}
+
+async function findUser(cpf) {
+  const user = await findUserModel(cpf);
+  if (!user) throw objError(STATUS_400, DEPOSIT_DESCRIPTION);
+
+  return user;
+}
 
 module.exports = async (cpf, value) => {
-  const { error } = depositSchema.validate({ cpf, value });
-  if (error) throw objError(STATUS_400, DESCRIPTION);
-
-  const findUser = await findUserModel(cpf);
-  if (!findUser) throw objError(STATUS_400, DESCRIPTION);
-
-  const { _id, balance } = findUser;
-  const id = _id;
+  validateSchema(cpf, value);
+  const { _id: id, balance } = await findUser(cpf);
   const newBalance = { balance: balance + value };
-  await depositTransferModel(id, newBalance);
+  await updateBalanceModel(id, newBalance);
 
   return { message: 'Depósito efetuado com sucesso!', cpf, value };
 };

@@ -5,21 +5,22 @@ const objError = require('../functions/objError');
 const registerUserSchema = require('../schemas/registerUserSchema');
 const findUserModel = require('../models/findUserModel');
 const saveUserPasswordModel = require('../models/saveUserPasswordModel');
+const { STATUS_400, REGISTER_SCHEMA_DESCRIPTION, ALREADY_REGISTERED_DESCRIPTION } = require('../lib/constants');
 
-module.exports = async (userRegister) => {
-  const { name, cpf, password } = userRegister;
-
+function validateSchema(name, cpf, password) {
   const { error } = registerUserSchema.validate({ name, cpf, password });
   const fullname = name.split(' ');
-  if (!fullname[1] || error) {
-    throw objError(
-      400,
-      'Digite o nome completo, cpf valido (xxx.xxx.xxx-xx) e senha de 6 caracteres',
-    );
-  }
+  if (!fullname[1] || error) throw objError(STATUS_400, REGISTER_SCHEMA_DESCRIPTION);
+}
 
-  const findUser = await findUserModel(cpf);
-  if (findUser) throw objError(400, 'Úsuario já cadastrado');
+async function checkUserAlreadyRegistered(cpf) {
+  const user = await findUserModel(cpf);
+  if (user) throw objError(STATUS_400, ALREADY_REGISTERED_DESCRIPTION);
+}
+
+module.exports = async ({ name, cpf, password }) => {
+  validateSchema(name, cpf, password);
+  await checkUserAlreadyRegistered(cpf);
 
   const bcryptPassword = await hash(password, 8);
 

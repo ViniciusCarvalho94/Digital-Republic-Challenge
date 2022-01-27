@@ -1,22 +1,51 @@
-## Digital-Republic-Challenge
+# Digital-Republic-Challenge
 
-Pré-requisitos: node LTS, e mongoDB
+### API para realizar registro de clientes e transações financeiras
 
-* Essa aplicação foi desenvolvida utilizando: Node.js, express, JWT, joi, bcrypt e mongoDB.
-* Para facilitar o desenvolvimento da API foi utilizado o nodemon e eslint com base do airbnb e algumas modificações.
-* Foi utilizada a arquitetura de software no padrão MSC (Model, Service, Controller).
-* Para teste foi utilizado: chai, chai-http, mocha, mongodb-memory-server e sinon.
-* Para facilitar os testes foi utilizado o nyc.
+## Estrutura de diretórios
+- Insomnia-file: Contém o arquivo de projeto do Insomnia
+- src: Source da API
+- - auth: Módulo de geração do JWT
+- - controllers: Controladores de acesso a API
+- - functions: Funções de uso comum no projeto
+- - lib: Constantes do projeto
+- - middlewares: Middlewares de requisições
+- - models: Repositórios do banco de dados
+- - routes: Rotas da API
+- - schemas: Regras de validações de objetos
+- - services: Código de domínio
+- - tests: Testes unitários e integrados
 
+## Dependências
+- Node v16
+- MongoDB v5
 
-As opções que estão com * estão melhor explicadas no final.
+## Bibliotecas
+- bcrypt: Biblioteca para criptografia
+- express: Framework web
+- joi: Biblioteca pra auxiliar em validações
+- jsonwebtoken: Biblioteca para trabalhar com JWT
+- mongodb: MongoDB driver
 
-1. **npm install**, para instalar dependências.
-2. **npm start**, para rodar o servidor na porta 3000.
-3. *Caso queira testar via software utilize o Insomnia.
-4. ****npm test**, para testar via mocha.
-5. **npm run test:coverage**, ele ira testar via mocha e irá criar uma pasta com o nome **coverage**, abra o **index.html** que está dentro dela para saber a cobertura que foi feita nos testes.
+## Bibliotecas de desenvolvimento
+- chai: Ferramenta para asserções de testes unitários
+- chai-http: Ferramenta para asserções de testes integrados
+- eslint: Ferramenta para validação de padrões de escrita do código
+- eslint-config-airbnb-base: Plugin do padrão de escrita do airbnb
+- esling-plugin-import: Plugin para permitir importação de padrões de escrita
+- mocha: Bliblioteca para testes
+- mongodb-memory-server: Mock do MongoDB
+- nodemon: HTTP Server para desenvolvimento local
+- nyc: Ferramenta para verificação de cobertura de testes
+- sinon: Ferramenta que habilita mocks e stubs nos testes
 
-*. Baixe e instale o **Insomnia** pelo link: https://insomnia.rest/download e faça o import do arquivo que está na pasta **Insomnia-file** para o Insomnia. Link para a documentação sobre como importar uma coleção: https://docs.insomnia.rest/insomnia/import-export-data.
+## Como rodar a aplicação?
+- Instale as dependências: `npm install`
+- Inicie o servidor http: `npm start`
+- O servidor estará disponível em `http://localhost:3000`
+- Já há um projeto do Insomnia com a API mapeada: `./Insomnia-file/Insomnia-digital-republic-challenge.json`
 
-**. Deixe o npm start rodando de fundo antes de qualquer teste.
+## Como rodar os testes?
+- Inicie o servidor http: `npm start`
+- Rodar os testes: `npm test`
+- Rodar os testes com cobertura de cógido: `npm run test:coverage`

@@ -1,28 +1,35 @@
 const transferSchema = require('../schemas/transferSchema');
 const objError = require('../functions/objError');
 const findUserModel = require('../models/findUserModel');
-const depositTransferModel = require('../models/depositTransferModel');
+const updateBalanceModel = require('../models/updateBalanceModel');
+const { STATUS_400, TRANSFER_DESCRIPTION, INSULFFICIENT_FUNDS_DESCRIPTION } = require('../lib/constants');
 
-const STATUS_400 = 400;
-const DESCRIPTION = 'CPF ou valor inválidos, cpf no formato (xxx.xxx.xxx-xx)';
-
-module.exports = async (fromAccount, { cpf, value }) => {
+function validateSchema(cpf, value) {
   const { error } = transferSchema.validate({ cpf, value });
-  if (error) throw objError(STATUS_400, DESCRIPTION);
+  if (error) throw objError(STATUS_400, TRANSFER_DESCRIPTION);
+}
 
-  const toUser = await findUserModel(cpf);
-  if (!toUser) throw objError(STATUS_400, DESCRIPTION);
+async function findToUser(cpf) {
+  const user = await findUserModel(cpf);
+  if (!user) throw objError(STATUS_400, TRANSFER_DESCRIPTION);
 
-  const fromBalance = fromAccount.balance;
-  if (fromBalance < value) throw objError(STATUS_400, 'Saldo insuficiente');
+  return user;
+}
 
-  const { _id: fromId } = fromAccount;
-  const newFromBalance = { balance: fromBalance - value };
-  await depositTransferModel(fromId, newFromBalance);
+function validateFromUserBalance(fromBalance, toValue) {
+  if (fromBalance < toValue) throw objError(STATUS_400, INSULFFICIENT_FUNDS_DESCRIPTION);
+}
 
-  const { _id: toId } = toUser;
-  const newtoBalance = { balance: toUser.balance + value };
-  await depositTransferModel(toId, newtoBalance);
+module.exports = async ({ _id: fromId, balance: fromBalance }, { cpf: toCpf, value: toValue }) => {
+  validateSchema(toCpf, toValue);
+  const { _id: toId, balance: toBalance } = await findToUser(toCpf);
+  validateFromUserBalance(fromBalance, toValue);
 
-  return { message: 'Transferência realida com sucesso!', cpf, value };
+  const newFromBalance = { balance: fromBalance - toValue };
+  await updateBalanceModel(fromId, newFromBalance);
+
+  const newtoBalance = { balance: toBalance + toValue };
+  await updateBalanceModel(toId, newtoBalance);
+
+  return { message: 'Transferência realida com sucesso!', cpf: toCpf, value: toValue };
 };
