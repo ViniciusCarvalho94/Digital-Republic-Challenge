@@ -43,7 +43,9 @@
 - Instale as dependências: `npm install`
 - Inicie o servidor http: `npm start`
 - O servidor estará disponível em `http://localhost:3000`
-- Já há um projeto do Insomnia com a API mapeada: `./Insomnia-file/Insomnia-digital-republic-challenge.json`
+- Já tem um data do Insomnia com a API mapeada: `./Insomnia-file/Insomnia-digital-republic-challenge.json`
+- Link para download do Insomnia `https://insomnia.rest/download`
+- Link da documentação de como dar import no data `https://docs.insomnia.rest/insomnia/import-export-data`
 
 ## Como rodar os testes?
 - Inicie o servidor http: `npm start`
